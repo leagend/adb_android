@@ -28,23 +28,25 @@ Currently following adb commands are **supported**:
 * adb sync
 * adb version
 * adb bugreport
+* adb wait-for-device
+* adb logcat
+* adb -s
 
 Currently following adb commands are **not supported**:
 
 * adb forward
-* adb wait-for-device
-* adb logcat
 * adb jdwp
 * adb help
 * adb -d
 * adb -e
-* adb -s
 
 ### How to install?
 
 Install with help of pip:
 ```
 pip install adb_android
+or in this folder
+pip install .
 ```
 ### How to use?
 ```
