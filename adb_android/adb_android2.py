@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import tempfile
 from subprocess import check_output, CalledProcessError, call
-
+import re
 import var as v
 
 
@@ -190,6 +191,23 @@ def check_process_status(appName, device_name=None):
     return result
 
 
+def get_process_id(appName, device_name=None):
+    """
+    Execute shell command on target
+    :param device_name: device_name
+    :param device_name: device_name
+    :return: pid of app on dedicated device
+    """
+    result = None
+    ret, output = shell(v.ADB_SCRIPT_PS, device_name)
+    lines = output.strip('\r').split('\n')
+    for line in lines:
+        m = re.match('^\S+\s+([0-9]+).+{0}'.format(appName), line)
+        if m is not None:
+            result = m.group(1)
+    return result
+
+
 def install(apk, device_name=None, opts=[]):
     """
     Install *.apk on target
@@ -328,7 +346,7 @@ def _exec_command(adb_cmd):
         if e != '':  # avoid items with empty string...
             final_adb_cmd.append(e)  # ... so that final command doesn't
             # contain extra spaces
-    print('\n*** Executing ' + ' '.join(adb_cmd) + ' ' + 'command')
+    print('\n*** Executing {0} command'.format(' '.join(adb_cmd)))
 
     try:
         output = check_output(final_adb_cmd, stderr=t)
